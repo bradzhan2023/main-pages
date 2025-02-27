@@ -10,7 +10,8 @@
 # GitHub Pages
 
 _Create a site or blog from your GitHub repositories with GitHub Pages._
-<a href="https://bradzhan2023.github.io/main-pages/">(https://bradzhan2023.github.io/main-pages/)</a>
+<br/>
+<a href="https://bradzhan2023.github.io/main-pages/">https://bradzhan2023.github.io/main-pages/</a>
 
 </header>
 
