@@ -30,6 +30,11 @@ jobs:
       - id: get_step
         run: |
           echo "current_step=$(cat ./.github/steps/-step.txt)" >> $GITHUB_OUTPUT
+
+      - name: Test python
+        run: |
+          python test.py
+
     outputs:
       current_step: ${{ steps.get_step.outputs.current_step }}
 
@@ -56,10 +61,6 @@ jobs:
         with:
           fetch-depth: 0 # Let's get all the branches.
           ref: my-pages
-
-      - name: Test python
-        run: |
-          python test.py
 
       # In README.md, switch step 3 for step 4.
       - name: Update to step 4
