@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>即時貴金屬、加密貨幣與匯率走勢</title>
+    <!-- 載入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 設定 Tailwind 配置，使用 Inter 字體 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans TC', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* 定義每個圖表容器的高度，確保並排時有足夠空間 */
+        .chart-container {
+            width: 100%;
+            /* 調整高度，確保三欄在桌面上並排時視覺效果最佳 */
+            height: 65vh; 
+            min-height: 400px; /* 最小高度 */
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans p-4 sm:p-8">
+    <div class="max-w-screen-xl mx-auto bg-white p-6 sm:p-8 rounded-xl shadow-2xl">
+        <header class="text-center mb-6">
+            <h1 class="text-4xl font-extrabold text-gray-800 tracking-tight">全球市場趨勢觀察：貴金屬、加密貨幣與主要匯率</h1>
+            <!-- 免責聲明已移除 -->
+        </header>
+
+        <!-- 三個圖表容器，使用響應式網格佈局：小螢幕單列，大螢幕三列 -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <!-- Chart 1: 黃金 (GOLD) 走勢圖 -->
+            <div class="chart-container border border-gray-200 rounded-xl shadow-lg overflow-hidden">
+                <div class="flex items-center justify-between p-3 bg-yellow-50 border-b border-gray-200">
+                    <h2 class="text-xl font-bold text-gray-700">黃金 (GOLD) 走勢圖</h2>
+                    <span class="text-sm text-yellow-600 font-medium">TVC:GOLD</span>
+                </div>
+                <!-- 調整高度以容納上方的標題列 -->
+                <div class="tradingview-widget-container" style="width: 100%; height: calc(100% - 3.25rem);">
+                    <div id="tradingview_gold_chart" style="width: 100%; height: 100%;"></div>
+                </div>
+            </div>
+
+            <!-- Chart 2: 比特幣/美金 (BTC/USD) 走勢圖 -->
+            <div class="chart-container border border-gray-200 rounded-xl shadow-lg overflow-hidden">
+                <div class="flex items-center justify-between p-3 bg-blue-50 border-b border-gray-200">
+                    <h2 class="text-xl font-bold text-gray-700">比特幣/美金 (BTC/USD) 走勢圖</h2>
+                    <span class="text-sm text-blue-600 font-medium">BINANCE:BTCUSDT</span>
+                </div>
+                <!-- 調整高度以容納上方的標題列 -->
+                <div class="tradingview-widget-container" style="width: 100%; height: calc(100% - 3.25rem);">
+                    <div id="tradingview_btc_chart" style="width: 100%; height: 100%;"></div>
+                </div>
+            </div>
+            
+            <!-- Chart 3: 美金/台幣 (USD/TWD) 走勢圖 (已修正為使用 Advanced Chart Widget) -->
+            <div class="chart-container border border-gray-200 rounded-xl shadow-lg overflow-hidden">
+                <div class="flex items-center justify-between p-3 bg-green-50 border-b border-gray-200">
+                    <h2 class="text-xl font-bold text-gray-700">美金/台幣 (USD/TWD) 匯率</h2>
+                    <span class="text-sm text-green-600 font-medium">FX_IDC:USDTWD</span>
+                </div>
+                <!-- 調整高度以容納上方的標題列 -->
+                <div class="tradingview-widget-container" style="width: 100%; height: calc(100% - 3.25rem);">
+                    <div id="tradingview_usdtwd_chart" style="width: 100%; height: 100%;"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- TradingView 腳本和初始化邏輯 -->
+        <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+        <script type="text/javascript">
+            // 初始化 TradingView 圖表 (用於黃金、比特幣和美金/台幣)
+            function initTradingView() {
+                if (typeof TradingView !== 'undefined') {
+                    // 共同的圖表配置
+                    const commonConfig = {
+                        "width": "100%",
+                        "height": "100%",
+                        "interval": "D", // 預設日線
+                        "timezone": "Asia/Taipei", // 設定時區為台北
+                        "theme": "light",
+                        "style": "1", // 蠟燭圖
+                        "locale": "zh_TW", // 繁體中文
+                        "toolbar_bg": "#f1f3f6",
+                        "enable_publishing": false,
+                        "allow_symbol_change": true,
+                        "save_image": false,
+                        "show_popup_button": true,
+                        "popup_width": "1000",
+                        "popup_height": "650",
+                        "studies": ["Volume@tv-basicstudies"], // 底部顯示成交量
+                        "hide_side_toolbar": false,
+                        "details": false,
+                        "hotlist": false,
+                        "calendar": false,
+                        "news": ["forex"],
+                        "hide_legend": false,
+                        "withdateranges": true,
+                        "range": "YTD"
+                    };
+
+                    // 1. 黃金圖表 (TVC:GOLD)
+                    new TradingView.widget({
+                        ...commonConfig,
+                        "container_id": "tradingview_gold_chart",
+                        "symbol": "TVC:GOLD", 
+                    });
+
+                    // 2. 比特幣圖表 (BINANCE:BTCUSDT)
+                    new TradingView.widget({
+                        ...commonConfig,
+                        "container_id": "tradingview_btc_chart",
+                        "symbol": "BINANCE:BTCUSDT", // 使用幣安的比特幣/美金數據
+                        "news": ["crypto"] // 比特幣切換為加密貨幣新聞
+                    });
+
+                    // 3. 美金/台幣圖表 (FX_IDC:USDTWD)
+                    new TradingView.widget({
+                        ...commonConfig,
+                        "container_id": "tradingview_usdtwd_chart",
+                        "symbol": "FX_IDC:USDTWD", // 使用外匯數據源的 USD/TWD
+                        "news": ["forex"],
+                        "range": "6M" // 預設顯示 6 個月
+                    });
+                    
+                } else {
+                    // 如果 TradingView 腳本尚未載入，則重試
+                    setTimeout(initTradingView, 100);
+                }
+            }
+
+            // 在視窗載入完成後初始化圖表
+            window.onload = initTradingView;
+        </script>
+
+        <footer class="mt-8 text-center text-sm text-gray-400">
+            <p>&copy; 2025 即時貴金屬、加密貨幣與匯率走勢模擬。數據來源：TradingView。</p>
+        </footer>
+    </div>
+    <p>2025.12.11 00:35。</p>
+</body>
+</html>
