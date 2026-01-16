@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>複利計算機 - 定期定額版</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --success-color: #2ecc71;
+            --bg-color: #f9f9f9;
+        }
+
+        body {
+            font-family: "Microsoft JhengHei", sans-serif;
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 450px;
+        }
+
+        h2 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+
+        .input-group {
+            margin-bottom: 1.2rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 1rem;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .result {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background-color: #e8f4fd;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 1.05rem;
+        }
+
+        .total-highlight {
+            font-size: 1.4rem;
+            color: var(--success-color);
+            font-weight: bold;
+        }
+
+        .label-text { color: #7f8c8d; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>複利計算機</h2>
+    
+    <div class="input-group">
+        <label>初始本金 (TWD)</label>
+        <input type="number" id="principal" value="100000">
+    </div>
+
+    <div class="input-group">
+        <label>每月新增投入 (TWD)</label>
+        <input type="number" id="monthlyAdd" value="10000">
+    </div>
+
+    <div class="input-group">
+        <label>預期年利率 (%)</label>
+        <input type="number" id="rate" step="0.1" value="6">
+    </div>
+
+    <div class="input-group">
+        <label>投資年限 (年)</label>
+        <input type="number" id="years" value="10">
+    </div>
+
+    <button onclick="calculate()">開始計算</button>
+
+    <div class="result" id="resultArea">
+        <div class="result-item">
+            <span class="label-text">總累積額：</span>
+            <span class="total-highlight" id="totalAmount"></span>
+        </div>
+        <hr style="border: 0.5px solid #bdc3c7;">
+        <div class="result-item">
+            <span class="label-text">總投入成本：</span>
+            <span id="totalInvest"></span>
+        </div>
+        <div class="result-item">
+            <span class="label-text">累積利息：</span>
+            <span id="totalInterest" style="color: #e67e22; font-weight: bold;"></span>
+        </div>
+    </div>
+</div>
+
+<script>
+    function calculate() {
+        // 取得輸入值
+        const P = parseFloat(document.getElementById('principal').value) || 0; // 初始本金
+        const PMT = parseFloat(document.getElementById('monthlyAdd').value) || 0; // 每月投入
+        const annualRate = parseFloat(document.getElementById('rate').value) / 100 || 0; // 年利率
+        const years = parseFloat(document.getElementById('years').value) || 0; // 年限
+        
+        const n = 12; // 每年複利次數（設為每月，以符合每月投入）
+        const r = annualRate / n; // 每期利率
+        const t = years * n; // 總期數（月數）
+
+        // 複利公式計算：
+        // 1. 初始本金的複利：A1 = P * (1 + r)^t
+        const A1 = P * Math.pow((1 + r), t);
+
+        // 2. 定期定額的年金終值：A2 = PMT * [((1 + r)^t - 1) / r]
+        // 注意：如果利率為 0，則直接相乘
+        let A2 = 0;
+        if (r > 0) {
+            A2 = PMT * ((Math.pow((1 + r), t) - 1) / r);
+        } else {
+            A2 = PMT * t;
+        }
+
+        const totalAmount = A1 + A2;
+        const totalInvested = P + (PMT * t);
+        const totalInterest = totalAmount - totalInvested;
+
+        // 顯示結果
+        document.getElementById('totalAmount').innerText = '$ ' + Math.round(totalAmount).toLocaleString();
+        document.getElementById('totalInvest').innerText = '$ ' + Math.round(totalInvested).toLocaleString();
+        document.getElementById('totalInterest').innerText = '$ ' + Math.round(totalInterest).toLocaleString();
+        
+        document.getElementById('resultArea').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
