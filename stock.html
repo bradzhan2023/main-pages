@@ -3,271 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>全球大盤即時監控</title>
+    <title>全球市場即時行情</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
         body {
-            /* 優化字體順序，確保中文顯示正常 */
-            font-family: 'Inter', "PingFang TC", "Heiti TC", "Microsoft JhengHei", "微軟正黑體", sans-serif;
-            background-color: #0f172a;
+            font-family: 'Inter', "PingFang TC", "Microsoft JhengHei", sans-serif;
+            background-color: #06080f;
             color: #f8fafc;
         }
-        .card {
-            background: #1e293b;
-            border: 1px solid #334155;
-            transition: transform 0.2s;
+        .market-card {
+            background: #131722;
+            border: 1px solid #363a45;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 480px;
         }
-        .card:hover {
-            transform: translateY(-2px);
-            border-color: #475569;
+        .tw-list-card {
+            background: #131722;
+            border: 1px solid #363a45;
+            border-radius: 12px;
+            overflow: hidden;
+            height: 300px;
         }
-        .price-up { color: #f43f5e; } /* 台灣習慣：紅漲綠跌 */
-        .price-down { color: #10b981; }
-        .status-badge {
-            font-size: 0.75rem;
-            padding: 2px 8px;
-            border-radius: 9999px;
-            font-weight: 600;
-        }
-        .status-live { background-color: #f43f5e; color: white; }
-        .status-futures { background-color: #3b82f6; color: white; }
-        
-        canvas {
+        .tv-container {
+            flex-grow: 1;
             width: 100%;
-            height: 50px;
-            margin-top: 0.5rem;
-        }
-
-        /* 高低價區間條 */
-        .range-bar-bg {
-            height: 4px;
-            background: #334155;
-            border-radius: 2px;
-            position: relative;
-            margin: 8px 0;
-        }
-        .range-bar-fill {
-            height: 100%;
-            background: #94a3b8;
-            border-radius: 2px;
-            position: absolute;
-        }
-        .range-dot {
-            width: 8px;
-            height: 8px;
-            background: white;
-            border-radius: 50%;
-            position: absolute;
-            top: -2px;
-            transform: translateX(-50%);
-            box-shadow: 0 0 4px rgba(0,0,0,0.5);
         }
     </style>
 </head>
 <body class="p-4 md:p-8">
     <div class="max-w-7xl mx-auto">
-        <header class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <header class="mb-8 flex justify-between items-end">
             <div>
-                <h1 class="text-3xl font-bold tracking-tight text-white">全球市場監控儀表板</h1>
-                <p class="text-slate-400 mt-1" id="current-time-display">載入時間中...</p>
+                <h1 class="text-3xl font-bold text-white">全球大盤真實數據</h1>
+                <p class="text-slate-500 mt-2">數據來源：TradingView Real-time Data</p>
             </div>
-            <div class="flex gap-4 items-center">
-                <div class="text-right hidden sm:block">
-                    <p class="text-xs text-slate-500 uppercase font-bold">市場狀態說明</p>
-                    <div class="flex gap-2 mt-1">
-                        <span class="status-badge status-live text-[10px]">現貨盤中</span>
-                        <span class="status-badge status-futures text-[10px]">電子盤/期貨</span>
-                    </div>
-                </div>
+            <div class="text-right text-xs text-slate-500">
+                更新日期：2026/03/17
             </div>
         </header>
 
-        <!-- 指數網格 -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="market-grid">
-            <!-- 由 JavaScript 動態生成 -->
-        </div>
-
-        <!-- 說明欄位 -->
-        <footer class="mt-12 p-6 bg-slate-800/50 rounded-xl border border-slate-700">
-            <h3 class="text-lg font-semibold mb-2">圖表資訊說明</h3>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-slate-400">
-                <div>
-                    <strong class="text-slate-200 block mb-1">昨日收盤</strong>
-                    基準價格，漲跌幅計算之起點。
+        <!-- 台股部分：使用最穩定的列表元件確保數據產出 -->
+        <div class="mb-8">
+            <div class="tw-list-card">
+                <div class="p-3 border-b border-slate-800 bg-slate-900/50">
+                    <h3 class="font-bold text-base text-blue-400">台股市場監控 (穩定數據源)</h3>
                 </div>
-                <div>
-                    <strong class="text-slate-200 block mb-1">今日高低點 (H/L)</strong>
-                    顯示當日（或電子盤時段）的波動極值。
-                </div>
-                <div>
-                    <strong class="text-slate-200 block mb-1">即時走勢圖</strong>
-                    紀錄開啟網頁後的價格路徑，顏色隨當前漲跌同步切換。
+                <div class="h-[240px]">
+                    <div class="tradingview-widget-container" style="height:100%;width:100%">
+                        <div class="tradingview-widget-container__widget"></div>
+                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
+                        {
+                          "colorTheme": "dark",
+                          "dateRange": "1D",
+                          "showChart": false,
+                          "locale": "zh_TW",
+                          "isTransparent": true,
+                          "showSymbolLogo": true,
+                          "width": "100%",
+                          "height": "100%",
+                          "tabs": [
+                            {
+                              "title": "台灣市場",
+                              "symbols": [
+                                { "s": "TWSE:TAIEX", "d": "加權指數" },
+                                { "s": "TAIFEX:TX1!", "d": "台指期貨" }
+                              ]
+                            }
+                          ]
+                        }
+                        </script>
+                    </div>
                 </div>
             </div>
+        </div>
+
+        <!-- 美股部分：還原回原本精美的圖表卡片 -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- S&P 500 -->
+            <div class="market-card">
+                <div class="p-4 border-b border-slate-800 bg-slate-900/50">
+                    <h3 class="font-bold text-lg">標普 500 (SPY)</h3>
+                </div>
+                <div class="tv-container">
+                    <div class="tradingview-widget-container" style="height:100%;width:100%">
+                        <div id="tv-spx" style="height:100%;width:100%"></div>
+                        <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+                        <script type="text/javascript">
+                        new TradingView.MediumWidget({
+                          "symbols": [["S&P 500", "SPY|1D"]],
+                          "chartOnly": false,
+                          "width": "100%",
+                          "height": "100%",
+                          "locale": "zh_TW",
+                          "colorTheme": "dark",
+                          "gridLineColor": "rgba(42, 46, 57, 0)",
+                          "fontColor": "#787B86",
+                          "isTransparent": true,
+                          "autosize": true,
+                          "container_id": "tv-spx"
+                        });
+                        </script>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 那斯達克 -->
+            <div class="market-card">
+                <div class="p-4 border-b border-slate-800 bg-slate-900/50">
+                    <h3 class="font-bold text-lg">那斯達克 (QQQ)</h3>
+                </div>
+                <div class="tv-container">
+                    <div class="tradingview-widget-container" style="height:100%;width:100%">
+                        <div id="tv-ndx" style="height:100%;width:100%"></div>
+                        <script type="text/javascript">
+                        new TradingView.MediumWidget({
+                          "symbols": [["Nasdaq 100", "QQQ|1D"]],
+                          "chartOnly": false,
+                          "width": "100%",
+                          "height": "100%",
+                          "locale": "zh_TW",
+                          "colorTheme": "dark",
+                          "gridLineColor": "rgba(42, 46, 57, 0)",
+                          "fontColor": "#787B86",
+                          "isTransparent": true,
+                          "autosize": true,
+                          "container_id": "tv-ndx"
+                        });
+                        </script>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 費城半導體 -->
+            <div class="market-card">
+                <div class="p-4 border-b border-slate-800 bg-slate-900/50">
+                    <h3 class="font-bold text-lg">費城半導體 (SOXX)</h3>
+                </div>
+                <div class="tv-container">
+                    <div class="tradingview-widget-container" style="height:100%;width:100%">
+                        <div id="tv-sox" style="height:100%;width:100%"></div>
+                        <script type="text/javascript">
+                        new TradingView.MediumWidget({
+                          "symbols": [["費半指數", "SOXX|1D"]],
+                          "chartOnly": false,
+                          "width": "100%",
+                          "height": "100%",
+                          "locale": "zh_TW",
+                          "colorTheme": "dark",
+                          "gridLineColor": "rgba(42, 46, 57, 0)",
+                          "fontColor": "#787B86",
+                          "isTransparent": true,
+                          "autosize": true,
+                          "container_id": "tv-sox"
+                        });
+                        </script>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <footer class="mt-8 text-center text-slate-600 text-sm">
+            本看板結合多種穩定元件，確保台股數據與美股圖表同時並存。
         </footer>
     </div>
-
-    <script>
-        const markets = [
-            { id: 'tw', name: '台股指數', spotSymbol: '加權指數 (TAIEX)', futureSymbol: '台指期 (TX)', basePrice: 22800, timezone: 'Asia/Taipei', openHour: 9, openMin: 0, closeHour: 13, closeMin: 30 },
-            { id: 'sp500', name: 'S&P 500', spotSymbol: '標普 500 (SPX)', futureSymbol: '標普期貨 (ES)', basePrice: 5120, timezone: 'America/New_York', openHour: 9, openMin: 30, closeHour: 16, closeMin: 0 },
-            { id: 'nasdaq', name: '那斯達克', spotSymbol: '那指 100 (NDX)', futureSymbol: '那指期貨 (NQ)', basePrice: 18200, timezone: 'America/New_York', openHour: 9, openMin: 30, closeHour: 16, closeMin: 0 },
-            { id: 'sox', name: '費城半導體', spotSymbol: '費半指數 (SOX)', futureSymbol: '費半期貨 (SOX-F)', basePrice: 4850, timezone: 'America/New_York', openHour: 9, openMin: 30, closeHour: 16, closeMin: 0 }
-        ];
-
-        const marketState = {};
-        const MAX_HISTORY = 40;
-
-        function checkMarketStatus(market) {
-            const now = new Date();
-            const localTimeStr = now.toLocaleString('en-US', { timeZone: market.timezone });
-            const localDate = new Date(localTimeStr);
-            const day = localDate.getDay(); 
-            const hour = localDate.getHours();
-            const min = localDate.getMinutes();
-            const timeInMinutes = hour * 60 + min;
-
-            const openTime = market.openHour * 60 + market.openMin;
-            const closeTime = market.closeHour * 60 + market.closeMin;
-            const isWeekend = (day === 0 || day === 6);
-            const isSpotOpen = !isWeekend && (timeInMinutes >= openTime && timeInMinutes < closeTime);
-
-            return {
-                isSpotOpen,
-                label: isSpotOpen ? market.spotSymbol : market.futureSymbol,
-                type: isSpotOpen ? 'live' : 'futures',
-                localTime: localDate.toLocaleTimeString('zh-TW', { hour12: false })
-            };
-        }
-
-        function drawSparkline(canvas, history, isUp) {
-            if (history.length < 2) return;
-            const ctx = canvas.getContext('2d');
-            const width = canvas.width;
-            const height = canvas.height;
-            ctx.clearRect(0, 0, width, height);
-            
-            const min = Math.min(...history);
-            const max = Math.max(...history);
-            const range = max - min || 1;
-            
-            ctx.beginPath();
-            ctx.strokeStyle = isUp ? '#f43f5e' : '#10b981';
-            ctx.lineWidth = 2;
-            ctx.lineJoin = 'round';
-            
-            const step = width / (MAX_HISTORY - 1);
-            history.forEach((val, i) => {
-                const x = i * step;
-                const y = height - ((val - min) / range) * (height - 8) - 4;
-                if (i === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-            });
-            ctx.stroke();
-
-            ctx.lineTo(history.length * step, height);
-            ctx.lineTo(0, height);
-            const gradient = ctx.createLinearGradient(0, 0, 0, height);
-            gradient.addColorStop(0, isUp ? 'rgba(244, 63, 94, 0.15)' : 'rgba(16, 185, 129, 0.15)');
-            gradient.addColorStop(1, 'rgba(30, 41, 59, 0)');
-            ctx.fillStyle = gradient;
-            ctx.fill();
-        }
-
-        function updateData() {
-            const grid = document.getElementById('market-grid');
-            const timeDisplay = document.getElementById('current-time-display');
-            timeDisplay.innerText = `最後更新：${new Date().toLocaleString('zh-TW')}`;
-
-            markets.forEach(m => {
-                const status = checkMarketStatus(m);
-                
-                if (!marketState[m.id]) {
-                    const prevClose = m.basePrice;
-                    const initialPrice = prevClose + (Math.random() * 40 - 20);
-                    marketState[m.id] = {
-                        price: initialPrice,
-                        prevClose: prevClose,
-                        high: initialPrice + 10,
-                        low: initialPrice - 10,
-                        history: [initialPrice]
-                    };
-                } else {
-                    const move = (Math.random() * 16 - 8);
-                    const state = marketState[m.id];
-                    state.price += move;
-                    state.high = Math.max(state.high, state.price);
-                    state.low = Math.min(state.low, state.price);
-                    state.history.push(state.price);
-                    if (state.history.length > MAX_HISTORY) state.history.shift();
-                }
-
-                const data = marketState[m.id];
-                const change = data.price - data.prevClose;
-                const percent = (change / data.prevClose) * 100;
-                const isUp = change >= 0;
-                const colorClass = isUp ? 'price-up' : 'price-down';
-
-                // 計算高低區間百分比
-                const rangeTotal = data.high - data.low || 1;
-                const currentPos = ((data.price - data.low) / rangeTotal) * 100;
-
-                let card = document.getElementById(`card-${m.id}`);
-                if (!card) {
-                    card = document.createElement('div');
-                    card.id = `card-${m.id}`;
-                    card.className = 'card p-5 rounded-2xl shadow-lg';
-                    grid.appendChild(card);
-                }
-                
-                card.innerHTML = `
-                    <div class="flex justify-between items-start mb-2">
-                        <div>
-                            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-wider">${m.name}</p>
-                            <h2 class="text-sm font-bold text-slate-200">${status.label}</h2>
-                        </div>
-                        <span class="status-badge ${status.type === 'live' ? 'status-live' : 'status-futures'}">
-                            ${status.type === 'live' ? '盤中' : '電子'}
-                        </span>
-                    </div>
-                    
-                    <div class="mt-3">
-                        <div class="flex items-baseline gap-2">
-                            <span class="text-3xl font-bold tracking-tight text-white">${data.price.toLocaleString(undefined, {minimumFractionDigits: 1, maximumFractionDigits: 1})}</span>
-                            <span class="text-sm font-bold ${colorClass}">${isUp ? '▲' : '▼'} ${Math.abs(percent).toFixed(2)}%</span>
-                        </div>
-                        <div class="text-[11px] text-slate-500 mt-1">
-                            昨收: <span class="text-slate-300">${data.prevClose.toLocaleString()}</span>
-                        </div>
-                    </div>
-
-                    <!-- 走勢圖 -->
-                    <canvas id="canvas-${m.id}" width="240" height="50"></canvas>
-
-                    <!-- 高低價區間顯示 -->
-                    <div class="mt-4">
-                        <div class="flex justify-between text-[10px] text-slate-400 font-mono mb-1">
-                            <span>L: ${data.low.toLocaleString(undefined, {maximumFractionDigits:1})}</span>
-                            <span>H: ${data.high.toLocaleString(undefined, {maximumFractionDigits:1})}</span>
-                        </div>
-                        <div class="range-bar-bg">
-                            <div class="range-dot" style="left: ${currentPos}%"></div>
-                        </div>
-                    </div>
-
-                    <div class="mt-3 pt-3 border-t border-slate-700/50 flex justify-between text-[9px] text-slate-500 font-mono uppercase">
-                        <span>當地時間: ${status.localTime}</span>
-                    </div>
-                `;
-
-                const canvas = document.getElementById(`canvas-${m.id}`);
-                drawSparkline(canvas, data.history, isUp);
-            });
-        }
-
-        updateData();
-        setInterval(updateData, 5000);
-    </script>
 </body>
 </html>
