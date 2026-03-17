@@ -21,13 +21,6 @@
             flex-direction: column;
             height: 480px;
         }
-        .tw-list-card {
-            background: #131722;
-            border: 1px solid #363a45;
-            border-radius: 12px;
-            overflow: hidden;
-            height: 300px;
-        }
         .tv-container {
             flex-grow: 1;
             width: 100%;
@@ -39,63 +32,28 @@
         <header class="mb-8 flex justify-between items-end">
             <div>
                 <h1 class="text-3xl font-bold text-white">全球大盤真實數據</h1>
-                <p class="text-slate-500 mt-2">數據來源：TradingView Real-time Data</p>
+                <p class="text-slate-500 mt-2">數據來源：Broker CFD (24H 盤前盤後監控)</p>
             </div>
             <div class="text-right text-xs text-slate-500">
                 更新日期：2026/03/17
             </div>
         </header>
 
-        <!-- 台股部分：使用最穩定的列表元件確保數據產出 -->
-        <div class="mb-8">
-            <div class="tw-list-card">
-                <div class="p-3 border-b border-slate-800 bg-slate-900/50">
-                    <h3 class="font-bold text-base text-blue-400">台股市場監控 (穩定數據源)</h3>
-                </div>
-                <div class="h-[240px]">
-                    <div class="tradingview-widget-container" style="height:100%;width:100%">
-                        <div class="tradingview-widget-container__widget"></div>
-                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
-                        {
-                          "colorTheme": "dark",
-                          "dateRange": "1D",
-                          "showChart": false,
-                          "locale": "zh_TW",
-                          "isTransparent": true,
-                          "showSymbolLogo": true,
-                          "width": "100%",
-                          "height": "100%",
-                          "tabs": [
-                            {
-                              "title": "台灣市場",
-                              "symbols": [
-                                { "s": "TWSE:TAIEX", "d": "加權指數" },
-                                { "s": "TAIFEX:TX1!", "d": "台指期貨" }
-                              ]
-                            }
-                          ]
-                        }
-                        </script>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 美股部分：還原回原本精美的圖表卡片 -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             
-            <!-- S&P 500 -->
-            <div class="market-card">
-                <div class="p-4 border-b border-slate-800 bg-slate-900/50">
-                    <h3 class="font-bold text-lg">標普 500 (SPY)</h3>
+            <!-- 台股替代方案：使用富時台灣指數 (FTSE Taiwan) CFD -->
+            <div class="market-card border-blue-500/30">
+                <div class="p-4 border-b border-slate-800 bg-slate-900/50 flex justify-between items-center">
+                    <h3 class="font-bold text-lg text-blue-400">台股參考行情 (FTSE Taiwan)</h3>
+                    <span class="text-[10px] bg-blue-500/20 text-blue-400 px-2 py-1 rounded">24H 走勢參考</span>
                 </div>
                 <div class="tv-container">
                     <div class="tradingview-widget-container" style="height:100%;width:100%">
-                        <div id="tv-spx" style="height:100%;width:100%"></div>
+                        <div id="tv-taiwan-cfd" style="height:100%;width:100%"></div>
                         <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
                         <script type="text/javascript">
                         new TradingView.MediumWidget({
-                          "symbols": [["S&P 500", "SPY|1D"]],
+                          "symbols": [["台股指數參考", "CAPITALCOM:TAIWAN|1D"]],
                           "chartOnly": false,
                           "width": "100%",
                           "height": "100%",
@@ -105,24 +63,24 @@
                           "fontColor": "#787B86",
                           "isTransparent": true,
                           "autosize": true,
-                          "container_id": "tv-spx"
+                          "container_id": "tv-taiwan-cfd"
                         });
                         </script>
                     </div>
                 </div>
             </div>
 
-            <!-- 那斯達克 -->
+            <!-- 那斯達克 CFD：更換代碼為 US100 或 NQ100 -->
             <div class="market-card">
                 <div class="p-4 border-b border-slate-800 bg-slate-900/50">
-                    <h3 class="font-bold text-lg">那斯達克 (QQQ)</h3>
+                    <h3 class="font-bold text-lg text-white">那斯達克 100 (Nasdaq 100)</h3>
                 </div>
                 <div class="tv-container">
                     <div class="tradingview-widget-container" style="height:100%;width:100%">
-                        <div id="tv-ndx" style="height:100%;width:100%"></div>
+                        <div id="tv-ndx-cfd-new" style="height:100%;width:100%"></div>
                         <script type="text/javascript">
                         new TradingView.MediumWidget({
-                          "symbols": [["Nasdaq 100", "QQQ|1D"]],
+                          "symbols": [["Nasdaq 100 CFD", "CAPITALCOM:US100|1D"]],
                           "chartOnly": false,
                           "width": "100%",
                           "height": "100%",
@@ -132,24 +90,24 @@
                           "fontColor": "#787B86",
                           "isTransparent": true,
                           "autosize": true,
-                          "container_id": "tv-ndx"
+                          "container_id": "tv-ndx-cfd-new"
                         });
                         </script>
                     </div>
                 </div>
             </div>
 
-            <!-- 費城半導體 -->
+            <!-- S&P 500 CFD -->
             <div class="market-card">
                 <div class="p-4 border-b border-slate-800 bg-slate-900/50">
-                    <h3 class="font-bold text-lg">費城半導體 (SOXX)</h3>
+                    <h3 class="font-bold text-lg text-white">標普 500 (US500)</h3>
                 </div>
                 <div class="tv-container">
                     <div class="tradingview-widget-container" style="height:100%;width:100%">
-                        <div id="tv-sox" style="height:100%;width:100%"></div>
+                        <div id="tv-spx-cfd" style="height:100%;width:100%"></div>
                         <script type="text/javascript">
                         new TradingView.MediumWidget({
-                          "symbols": [["費半指數", "SOXX|1D"]],
+                          "symbols": [["S&P 500 CFD", "CAPITALCOM:US500|1D"]],
                           "chartOnly": false,
                           "width": "100%",
                           "height": "100%",
@@ -159,7 +117,34 @@
                           "fontColor": "#787B86",
                           "isTransparent": true,
                           "autosize": true,
-                          "container_id": "tv-sox"
+                          "container_id": "tv-spx-cfd"
+                        });
+                        </script>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 道瓊 CFD -->
+            <div class="market-card">
+                <div class="p-4 border-b border-slate-800 bg-slate-900/50">
+                    <h3 class="font-bold text-lg text-white">道瓊工業 (US30)</h3>
+                </div>
+                <div class="tv-container">
+                    <div class="tradingview-widget-container" style="height:100%;width:100%">
+                        <div id="tv-dji-cfd" style="height:100%;width:100%"></div>
+                        <script type="text/javascript">
+                        new TradingView.MediumWidget({
+                          "symbols": [["Dow 30 CFD", "CAPITALCOM:US30|1D"]],
+                          "chartOnly": false,
+                          "width": "100%",
+                          "height": "100%",
+                          "locale": "zh_TW",
+                          "colorTheme": "dark",
+                          "gridLineColor": "rgba(42, 46, 57, 0)",
+                          "fontColor": "#787B86",
+                          "isTransparent": true,
+                          "autosize": true,
+                          "container_id": "tv-dji-cfd"
                         });
                         </script>
                     </div>
@@ -169,7 +154,7 @@
         </div>
 
         <footer class="mt-8 text-center text-slate-600 text-sm">
-            本看板結合多種穩定元件，確保台股數據與美股圖表同時並存。
+            本看板採用全球券商 CFD 數據，支援 24 小時行情跳動。若台股依然受限，代表該數據源目前暫停外部圖表輸出。
         </footer>
     </div>
 </body>
