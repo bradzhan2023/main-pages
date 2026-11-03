@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>全球五大指數即時看板｜台股・S&P 500・那斯達克・道瓊・費半</title>
+  <title>全球五大指數行情看板｜台股・S&P 500・那斯達克・道瓊・費半</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
@@ -97,13 +97,13 @@
             </div>
             <div>
               <div class="flex items-center gap-2">
-                <h1 class="text-base sm:text-lg font-bold tracking-tight text-white">全球五大指數即時戰情室</h1>
+                <h1 class="text-base sm:text-lg font-bold tracking-tight text-white">全球五大指數行情看板</h1>
                 <span id="liveStreamBadge" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
                   <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 live-dot"></span>
-                  即時連線跳動中
+                  行情來源同步中
                 </span>
               </div>
-              <p class="text-xs text-slate-400">開盤自動顯示現貨即時・收盤自動切換期貨電子盤</p>
+              <p class="text-xs text-slate-400">現貨開盤顯示現貨指數・收盤且期貨交易時切換指數期貨</p>
             </div>
           </div>
 
@@ -152,11 +152,11 @@
             <button type="button" id="colorSchemeBtn" class="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-800 transition-colors flex items-center gap-1.5" title="切換漲跌顏色習慣">
               <span id="colorSchemeLabel">🔴 紅漲綠跌 (台股)</span>
             </button>
-            <button type="button" id="toggleStreamBtn" class="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-800 transition-colors flex items-center gap-1" title="暫停或恢復即時報價跳動">
+            <button type="button" id="toggleStreamBtn" class="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-800 transition-colors flex items-center gap-1" title="暫停或恢復每分鐘自動向行情來源更新">
               <span id="toggleStreamIcon">⏸️</span>
-              <span id="toggleStreamText" class="hidden sm:inline">暫停跳動</span>
+              <span id="toggleStreamText" class="hidden sm:inline">暫停自動更新</span>
             </button>
-            <button type="button" id="syncLiveApiBtn" class="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 transition-colors flex items-center gap-1" title="立即重新整理並同步最新市場即時報價">
+            <button type="button" id="syncLiveApiBtn" class="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 transition-colors flex items-center gap-1" title="立即重新整理並同步最新市場行情報價">
               <svg id="syncSpinner" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
               </svg>
@@ -183,7 +183,7 @@
         </div>
       </div>
       <div class="flex items-center gap-3 text-slate-400">
-        <span id="activeRuleSummary">目前規則：開盤自動顯示現貨即時，收盤自動切換電子盤/夜盤</span>
+        <span id="activeRuleSummary">目前規則：現貨開盤顯示現貨；收盤且電子盤開市時切換期貨</span>
         <span class="hidden sm:inline text-slate-600">•</span>
         <span id="lastTickTime" class="font-mono text-[11px] text-slate-400">更新時間: --:--:--</span>
       </div>
@@ -199,7 +199,7 @@
     </section>
 
     <!-- 5 Main Index Cards Grid -->
-    <section aria-label="五大指數即時走勢卡片">
+    <section aria-label="五大指數行情走勢卡片">
       <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5" id="cardsGrid">
         <!-- Cards rendered by JS -->
       </div>
@@ -292,8 +292,8 @@
   <!-- Footer -->
   <footer class="border-t border-slate-800/80 bg-slate-950/80 py-4 px-4 sm:px-6 text-center text-xs text-slate-500">
     <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-      <span>全球五大指數即時看盤系統｜支援當日 (1D)、一週 (1W)、一月 (1M)、一季 (1Q)、一年 (1Y) 走勢切換</span>
-      <span>開盤即時顯示現貨指數・收盤自動切換期貨電子盤報價</span>
+      <span>全球五大指數行情看板｜支援當日 (1D)、一週 (1W)、一月 (1M)、一季 (1Q)、一年 (1Y) 走勢切換</span>
+      <span>現貨開盤顯示現貨指數・收盤後於期貨交易時段切換指數期貨</span>
     </div>
   </footer>
 
@@ -517,7 +517,7 @@
         cashSymbol: '^IXIC',
         cashDisplaySymbol: 'NASDAQ 現貨指數',
         futuresSymbol: 'NQ=F',
-        futuresDisplaySymbol: 'E-mini 那斯達克期貨電子盤',
+        futuresDisplaySymbol: 'E-mini Nasdaq-100 期貨電子盤',
         yahooCashSymbol: '%5EIXIC',
         yahooFuturesSymbol: 'NQ%3DF',
         regularHoursDesc: '美東 09:30–16:00 (冬令台北 22:30–05:00)',
@@ -700,10 +700,10 @@
         flag: '🇺🇸',
         cashSymbol: '^SOX',
         cashDisplaySymbol: 'PHLX 費半現貨指數',
-        futuresSymbol: 'SOX-E / SOXX',
-        futuresDisplaySymbol: '費半電子盤 / 夜盤連動',
+        futuresSymbol: 'SOX=F',
+        futuresDisplaySymbol: 'E-mini 費城半導體期貨電子盤',
         yahooCashSymbol: '%5ESOX',
-        yahooFuturesSymbol: 'SOXX',
+        yahooFuturesSymbol: 'SOX%3DF',
         regularHoursDesc: '美東 09:30–16:00 (冬令台北 22:30–05:00)',
         electronicHoursDesc: '美東 16:00–隔日 09:30 (盤後與夜盤電子交易)',
         cashData: {
@@ -785,6 +785,15 @@
         ]
       }
     ];
+
+    // The numeric literals above are legacy display placeholders, not market data.
+    // Never present them as real quotes before a provider response succeeds.
+    INDICES_CONFIG.forEach(idx => {
+      idx.cashData.isRealQuote = false;
+      idx.futuresData.isRealQuote = false;
+      idx.cashHistory1Y = [];
+      idx.futuresHistory1Y = [];
+    });
 
     // ============================================================================
     // 2. APPLICATION STATE
@@ -869,8 +878,28 @@
     function isUSCashOpen() {
       const ny = getTimezoneParts('America/New_York');
       if (!ny.isWeekday) return false;
-      // 09:30 (570) to 16:00 (960)
       return ny.minutesOfDay >= 570 && ny.minutesOfDay < 960;
+    }
+
+    // CME equity-index futures: Sunday 18:00 ET through Friday 17:00 ET,
+    // with the daily maintenance break from 17:00 to 18:00 ET.
+    function isUSFuturesOpen() {
+      const ny = getTimezoneParts('America/New_York');
+      const m = ny.minutesOfDay;
+      if (ny.weekday === 'Sat') return false;
+      if (ny.weekday === 'Sun') return m >= 1080;
+      if (ny.weekday === 'Fri') return m < 1020;
+      return m < 1020 || m >= 1080;
+    }
+
+    // TAIFEX index futures day session 08:45-13:45 and night session
+    // 15:00-05:00 of the following calendar day.
+    function isTaiwanFuturesOpen() {
+      const tw = getTimezoneParts('Asia/Taipei');
+      const m = tw.minutesOfDay;
+      if (tw.weekday === 'Sat') return m < 300; // Friday night session
+      if (tw.weekday === 'Sun') return false;
+      return (m >= 525 && m < 825) || m >= 900 || m < 300;
     }
 
     function getActiveSessionForIndex(indexObj) {
@@ -882,10 +911,11 @@
       if (state.sessionMode === 'futures') return 'futures';
       // Smart Auto mode: 開盤顯示現貨, 收盤顯示電子盤
       if (indexObj.region === 'TW') {
-        return isTaiwanCashOpen() ? 'cash' : 'futures';
-      } else {
-        return isUSCashOpen() ? 'cash' : 'futures';
+        if (isTaiwanCashOpen()) return 'cash';
+        return isTaiwanFuturesOpen() ? 'futures' : 'cash';
       }
+      if (isUSCashOpen()) return 'cash';
+      return isUSFuturesOpen() ? 'futures' : 'cash';
     }
 
     // ============================================================================
@@ -926,6 +956,7 @@
     }
 
     function formatNumber(num, decimals = 2) {
+      if (num === null || num === undefined || num === '' || !Number.isFinite(Number(num))) return '--';
       return Number(num).toLocaleString('en-US', {
         minimumFractionDigits: decimals,
         maximumFractionDigits: decimals
@@ -967,7 +998,10 @@
         };
       }
 
-      const hist = indexObj.history1Y;
+      const hist = sessionType === 'cash' ? indexObj.cashHistory1Y : indexObj.futuresHistory1Y;
+      if (!hist || hist.length === 0) {
+        return { labels: [], values: [], baseline: activeData.prevClose || 0, periodStartPrice: activeData.prevClose || 0 };
+      }
       let sliceCount = hist.length;
       if (timeframe === '1W') sliceCount = 6;
       else if (timeframe === '1M') sliceCount = 10;
@@ -1008,7 +1042,7 @@
           twBadge.textContent = '🟢 現貨開盤中 (09:00–13:30)';
         } else {
           twBadge.className = 'font-semibold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30';
-          twBadge.textContent = '🌙 現貨已收盤・台指期電子盤交易中';
+          twBadge.textContent = isTaiwanFuturesOpen() ? '🌙 現貨已收盤・台指期電子盤交易中' : '⏸ 現貨與台指期均休市';
         }
       }
 
@@ -1019,7 +1053,7 @@
           usBadge.textContent = '🟢 美股現貨開盤中 (09:30–16:00 ET)';
         } else {
           usBadge.className = 'font-semibold px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30';
-          usBadge.textContent = '🌙 美股現貨收盤・期貨電子盤交易中';
+          usBadge.textContent = isUSFuturesOpen() ? '🌙 美股現貨已收盤・指數期貨電子盤交易中' : '⏸ 美股現貨與指數期貨均休市';
         }
       }
 
@@ -1036,8 +1070,9 @@
       stripEl.innerHTML = INDICES_CONFIG.map(idx => {
         const sessionType = getActiveSessionForIndex(idx);
         const activeData = sessionType === 'cash' ? idx.cashData : idx.futuresData;
-        const change = activeData.price - activeData.prevClose;
-        const pct = (change / activeData.prevClose) * 100;
+        const hasQuote = activeData.isRealQuote === true;
+        const change = hasQuote ? activeData.price - activeData.prevClose : 0;
+        const pct = hasQuote && activeData.prevClose ? (change / activeData.prevClose) * 100 : 0;
         const colors = getSemanticColors(change);
         const sign = change >= 0 ? '+' : '';
         const isSelected = state.focusedIndexId === idx.id;
@@ -1059,8 +1094,8 @@
               </span>
             </div>
             <div class="mt-1.5 flex items-baseline justify-between gap-1">
-              <span id="mini-price-${idx.id}" class="text-sm sm:text-base font-mono font-bold text-white">${formatNumber(activeData.price)}</span>
-              <span id="mini-pct-${idx.id}" class="text-xs font-mono font-semibold ${colors.text}">${sign}${pct.toFixed(2)}%</span>
+              <span id="mini-price-${idx.id}" class="text-sm sm:text-base font-mono font-bold text-white">${hasQuote ? formatNumber(activeData.price) : '--'}</span>
+              <span id="mini-pct-${idx.id}" class="text-xs font-mono font-semibold ${colors.text}">${hasQuote ? `${sign}${pct.toFixed(2)}%` : '等待行情'}</span>
             </div>
           </button>
         `;
@@ -1205,11 +1240,33 @@
         const cashOpenNow = idx.region === 'TW' ? isTaiwanCashOpen() : isUSCashOpen();
         if (sessionType === 'cash') {
           badgeEl.className = 'inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30';
-          badgeEl.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 ${cashOpenNow ? 'live-dot' : ''}"></span>${cashOpenNow ? '現貨開盤即時' : '現貨收盤報價'}`;
+          badgeEl.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 ${cashOpenNow ? 'live-dot' : ''}"></span>${cashOpenNow ? '現貨開盤・來源最新報價' : '現貨收盤報價'}`;
         } else {
           badgeEl.className = 'inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/40';
-          badgeEl.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-indigo-400 live-dot"></span>收盤・電子盤即時`;
+          badgeEl.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-indigo-400 live-dot"></span>電子盤・來源最新報價`;
         }
+      }
+
+      if (!activeData.isRealQuote) {
+        const priceEl = document.getElementById(`card-price-${idx.id}`);
+        const changeEl = document.getElementById(`card-change-${idx.id}`);
+        const pctEl = document.getElementById(`card-pct-${idx.id}`);
+        const secLabelEl = document.getElementById(`card-secondary-label-${idx.id}`);
+        const secValEl = document.getElementById(`card-secondary-val-${idx.id}`);
+        if (priceEl) priceEl.textContent = '--';
+        if (changeEl) changeEl.textContent = '尚無有效行情';
+        if (pctEl) pctEl.textContent = '--';
+        if (secLabelEl) secLabelEl.textContent = '對應盤別報價';
+        if (secValEl) secValEl.textContent = secondaryData.isRealQuote ? formatNumber(secondaryData.price) : '--';
+        ['open','high','low','prev'].forEach(k => {
+          const el = document.getElementById(`stat-${k}-${idx.id}`);
+          if (el) el.textContent = '--';
+        });
+        const hours = document.getElementById(`stat-hours-${idx.id}`);
+        if (hours) hours.textContent = '等待行情來源回傳有效報價';
+        const emptySeries = { labels: [], values: [], baseline: 0, periodStartPrice: 0 };
+        renderOrUpdateCardChart(idx, emptySeries, getSemanticColors(0));
+        return;
       }
 
       // Per-card session toggle buttons active state
@@ -1261,16 +1318,21 @@
       const secLabelEl = document.getElementById(`card-secondary-label-${idx.id}`);
       const secValEl = document.getElementById(`card-secondary-val-${idx.id}`);
       if (secLabelEl && secValEl) {
-        const secChange = secondaryData.price - secondaryData.prevClose;
-        const secPct = (secChange / secondaryData.prevClose) * 100;
-        const secSign = secChange >= 0 ? '+' : '';
-        const secColors = getSemanticColors(secChange);
-        if (sessionType === 'futures') {
-          secLabelEl.textContent = `📌 現貨收盤 (${idx.cashSymbol}):`;
-          secValEl.innerHTML = `${formatNumber(secondaryData.price)} <span class="${secColors.text}">(${secSign}${secPct.toFixed(2)}%)</span>`;
+        if (!secondaryData.isRealQuote) {
+          secLabelEl.textContent = sessionType === 'futures' ? `📌 現貨收盤 (${idx.cashSymbol}):` : `🌙 電子盤報價 (${idx.futuresSymbol}):`;
+          secValEl.textContent = '--（尚無有效報價）';
         } else {
-          secLabelEl.textContent = `🌙 電子盤報價 (${idx.futuresSymbol}):`;
-          secValEl.innerHTML = `${formatNumber(secondaryData.price)} <span class="${secColors.text}">(${secSign}${secPct.toFixed(2)}%)</span>`;
+          const secChange = secondaryData.price - secondaryData.prevClose;
+          const secPct = (secChange / secondaryData.prevClose) * 100;
+          const secSign = secChange >= 0 ? '+' : '';
+          const secColors = getSemanticColors(secChange);
+          if (sessionType === 'futures') {
+            secLabelEl.textContent = `📌 現貨收盤 (${idx.cashSymbol}):`;
+            secValEl.innerHTML = `${formatNumber(secondaryData.price)} <span class="${secColors.text}">(${secSign}${secPct.toFixed(2)}%)</span>`;
+          } else {
+            secLabelEl.textContent = `🌙 電子盤報價 (${idx.futuresSymbol}):`;
+            secValEl.innerHTML = `${formatNumber(secondaryData.price)} <span class="${secColors.text}">(${secSign}${secPct.toFixed(2)}%)</span>`;
+          }
         }
       }
 
@@ -1309,7 +1371,7 @@
       }
 
       if (hoursEl) {
-        hoursEl.textContent = sessionType === 'cash' ? idx.regularHoursDesc : idx.electronicHoursDesc;
+        hoursEl.textContent = `${sessionType === 'cash' ? idx.regularHoursDesc : idx.electronicHoursDesc} ｜ 資料時間 ${activeData.updatedAt || '--'}`;
       }
 
       // Card focus outline
@@ -1482,6 +1544,16 @@
       const canvas = document.getElementById('focusMainChart');
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
+
+      if (state.focusChartInstance) {
+        state.focusChartInstance.destroy();
+        state.focusChartInstance = null;
+      }
+      if (!activeData.isRealQuote) {
+        const sidePanel = document.getElementById('focusSidePanel');
+        if (sidePanel) sidePanel.innerHTML = '<div class="text-sm text-amber-300">等待所選盤別的有效行情資料，暫不顯示價格或走勢。</div>';
+        return;
+      }
 
       if (state.focusChartInstance) {
         state.focusChartInstance.destroy();
@@ -1759,42 +1831,10 @@
     // ============================================================================
     // 9. REAL-TIME TICK STREAMING ENGINE & MULTI-PROXY LIVE API SYNC
     // ============================================================================
-    function simulateRealtimeTick() {
-      if (!state.liveStreamActive) return;
-
-      INDICES_CONFIG.forEach(idx => {
-        const sessionType = getActiveSessionForIndex(idx);
-        const activeData = sessionType === 'cash' ? idx.cashData : idx.futuresData;
-        const seriesArr = sessionType === 'cash' ? idx.intradayCash : idx.intradayFutures;
-
-        // Small realistic micro-fluctuation preserving the current trend direction
-        const maxMove = activeData.price * 0.00028;
-        const delta = (Math.random() - 0.485) * maxMove;
-        const nextPrice = Number((activeData.price + delta).toFixed(2));
-        activeData.price = nextPrice;
-
-        if (nextPrice > activeData.high) activeData.high = nextPrice;
-        if (nextPrice < activeData.low) activeData.low = nextPrice;
-
-        if (seriesArr.length > 0) {
-          seriesArr[seriesArr.length - 1].v = nextPrice;
-        }
-
-        updateCardUI(idx, true, delta);
-      });
-
-      renderMiniTickerStrip();
-      updateFocusSection();
-
-      const now = getTimezoneParts('Asia/Taipei');
-      const lastTickEl = document.getElementById('lastTickTime');
-      if (lastTickEl) {
-        lastTickEl.textContent = `更新時間: ${now.formattedTime}`;
-      }
-    }
-
+    // No synthetic/random price movement is allowed. Prices change only after
+    // a successful response from the selected market-data provider.
     async function fetchYahooSymbolWithFallback(encodedSymbol, targetDataObj, targetIntradayArr, timeZone) {
-      const yahooUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${encodedSymbol}?interval=5m&range=1d`;
+      const yahooUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${encodedSymbol}?interval=5m&range=5d`;
       const proxyUrls = [
         `https://corsproxy.io/?${encodeURIComponent(yahooUrl)}`,
         `https://api.allorigins.win/raw?url=${encodeURIComponent(yahooUrl)}`,
@@ -1802,58 +1842,102 @@
       ];
 
       for (const url of proxyUrls) {
+        let timeoutId;
         try {
           const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 3500);
-          const res = await fetch(url, { signal: controller.signal });
-          clearTimeout(timeoutId);
+          timeoutId = setTimeout(() => controller.abort(), 5000);
+          const res = await fetch(url, { signal: controller.signal, cache: 'no-store' });
           if (!res.ok) continue;
-
           const parsed = await res.json();
           const result = parsed?.chart?.result?.[0];
           const meta = result?.meta;
-          if (!meta || !meta.regularMarketPrice) continue;
+          if (!result || !meta || !Number.isFinite(Number(meta.regularMarketPrice))) continue;
 
-          const livePrice = Number(meta.regularMarketPrice.toFixed(2));
-          const prevClose = Number((meta.chartPreviousClose || meta.previousClose || targetDataObj.prevClose).toFixed(2));
-          targetDataObj.price = livePrice;
-          targetDataObj.prevClose = prevClose;
-
-          if (meta.regularMarketDayHigh) targetDataObj.high = Number(meta.regularMarketDayHigh.toFixed(2));
-          if (meta.regularMarketDayLow) targetDataObj.low = Number(meta.regularMarketDayLow.toFixed(2));
-
+          const quote = result?.indicators?.quote?.[0] || {};
           const timestamps = result?.timestamp || [];
-          const closes = result?.indicators?.quote?.[0]?.close || [];
-          const opens = result?.indicators?.quote?.[0]?.open || [];
+          const closes = quote.close || [];
+          const opens = quote.open || [];
+          const highs = quote.high || [];
+          const lows = quote.low || [];
+          const price = Number(meta.regularMarketPrice);
+          const prevCloseRaw = meta.chartPreviousClose ?? meta.previousClose;
+          const prevClose = Number(prevCloseRaw);
+          if (!Number.isFinite(price) || price <= 0) continue;
 
-          if (opens.length > 0) {
-            const firstOpen = opens.find(v => v !== null && v !== undefined);
-            if (firstOpen) targetDataObj.open = Number(firstOpen.toFixed(2));
-          }
+          targetDataObj.price = Number(price.toFixed(2));
+          if (Number.isFinite(prevClose) && prevClose > 0) targetDataObj.prevClose = Number(prevClose.toFixed(2));
+          if (Number.isFinite(Number(meta.regularMarketDayHigh))) targetDataObj.high = Number(Number(meta.regularMarketDayHigh).toFixed(2));
+          if (Number.isFinite(Number(meta.regularMarketDayLow))) targetDataObj.low = Number(Number(meta.regularMarketDayLow).toFixed(2));
+          const firstOpen = opens.find(v => Number.isFinite(Number(v)) && Number(v) > 0);
+          if (firstOpen !== undefined) targetDataObj.open = Number(Number(firstOpen).toFixed(2));
 
-          if (timestamps.length > 2 && closes.length === timestamps.length) {
+          const validTimes = timestamps.filter((ts, i) => Number.isFinite(ts) && closes[i] !== null && closes[i] !== undefined && Number.isFinite(Number(closes[i])));
+          const quoteTime = Number(meta.regularMarketTime) || (validTimes.length ? validTimes[validTimes.length - 1] : 0);
+          targetDataObj.quoteTimestamp = quoteTime ? quoteTime * 1000 : Date.now();
+          targetDataObj.updatedAt = new Intl.DateTimeFormat('zh-TW', {
+            timeZone, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+          }).format(new Date(targetDataObj.quoteTimestamp));
+          targetDataObj.source = 'Yahoo Finance';
+          targetDataObj.isRealQuote = true;
+
+          if (timestamps.length && closes.length === timestamps.length) {
             const pts = [];
-            const step = Math.max(1, Math.floor(timestamps.length / 18));
-            for (let i = 0; i < timestamps.length; i += step) {
-              const cVal = closes[i];
-              if (cVal === null || cVal === undefined) continue;
+            for (let i = 0; i < timestamps.length; i++) {
+              if (closes[i] === null || closes[i] === undefined || !Number.isFinite(Number(closes[i]))) continue;
               const d = new Date(timestamps[i] * 1000);
-              const hm = new Intl.DateTimeFormat('en-US', {
-                timeZone,
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: false
-              }).format(d);
-              pts.push({ t: hm, v: Number(cVal.toFixed(2)) });
+              const hm = new Intl.DateTimeFormat('en-US', { timeZone, hour: '2-digit', minute: '2-digit', hour12: false }).format(d);
+              pts.push({ t: hm, v: Number(Number(closes[i]).toFixed(2)) });
             }
-            if (pts.length >= 3) {
-              pts[pts.length - 1].v = livePrice;
-              targetIntradayArr.splice(0, targetIntradayArr.length, ...pts);
+            if (pts.length) {
+              // Keep the provider's actual candle closes; do not overwrite the last
+              // candle with a synthetic or differently-timestamped tick.
+              targetIntradayArr.splice(0, targetIntradayArr.length, ...pts.slice(-120));
             }
           }
           return true;
         } catch (e) {
-          // Try next proxy
+          // Try the next CORS relay; never fabricate a quote on failure.
+        } finally {
+          if (timeoutId) clearTimeout(timeoutId);
+        }
+      }
+      targetDataObj.isRealQuote = false;
+      return false;
+    }
+
+    async function fetchYahooHistoryWithFallback(encodedSymbol, targetHistoryArr, timeZone) {
+      const yahooUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${encodedSymbol}?interval=1d&range=1y`;
+      const proxyUrls = [
+        `https://corsproxy.io/?${encodeURIComponent(yahooUrl)}`,
+        `https://api.allorigins.win/raw?url=${encodeURIComponent(yahooUrl)}`,
+        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(yahooUrl)}`
+      ];
+      for (const url of proxyUrls) {
+        let timeoutId;
+        try {
+          const controller = new AbortController();
+          timeoutId = setTimeout(() => controller.abort(), 5000);
+          const res = await fetch(url, { signal: controller.signal, cache: 'no-store' });
+          if (!res.ok) continue;
+          const parsed = await res.json();
+          const result = parsed?.chart?.result?.[0];
+          const timestamps = result?.timestamp || [];
+          const closes = result?.indicators?.quote?.[0]?.close || [];
+          if (!timestamps.length || timestamps.length !== closes.length) continue;
+          const rows = [];
+          for (let i = 0; i < timestamps.length; i++) {
+            if (closes[i] === null || closes[i] === undefined || !Number.isFinite(Number(closes[i]))) continue;
+            const date = new Intl.DateTimeFormat('en-CA', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(timestamps[i] * 1000));
+            rows.push({ d: date, v: Number(Number(closes[i]).toFixed(2)) });
+          }
+          if (rows.length) {
+            targetHistoryArr.splice(0, targetHistoryArr.length, ...rows);
+            return true;
+          }
+        } catch (e) {
+          // Try next relay.
+        } finally {
+          if (timeoutId) clearTimeout(timeoutId);
         }
       }
       return false;
@@ -1862,26 +1946,54 @@
     async function trySyncLiveQuotes(silent = false) {
       const spinner = document.getElementById('syncSpinner');
       if (spinner) spinner.classList.add('animate-spin');
-
-      simulateRealtimeTick();
+      const startedAt = Date.now();
+      let success = 0;
+      let failed = 0;
 
       try {
-        await Promise.allSettled(
-          INDICES_CONFIG.map(async (idx) => {
+        const tasks = INDICES_CONFIG.flatMap(idx => {
+          const tz = idx.region === 'TW' ? 'Asia/Taipei' : 'America/New_York';
+          return [
+            fetchYahooSymbolWithFallback(idx.yahooCashSymbol, idx.cashData, idx.intradayCash, tz),
+            fetchYahooSymbolWithFallback(idx.yahooFuturesSymbol, idx.futuresData, idx.intradayFutures, tz)
+          ];
+        });
+        const results = await Promise.allSettled(tasks);
+        results.forEach(r => {
+          if (r.status === 'fulfilled' && r.value === true) success++;
+          else failed++;
+        });
+        // Load real daily history once at startup; never use the old hard-coded
+        // history arrays as if they were sourced market data.
+        if (!window.__marketHistoryLoaded && (Date.now() - (window.__marketHistoryLastAttempt || 0) > 900000)) {
+          window.__marketHistoryLastAttempt = Date.now();
+          const historyTasks = INDICES_CONFIG.flatMap(idx => {
             const tz = idx.region === 'TW' ? 'Asia/Taipei' : 'America/New_York';
-            await fetchYahooSymbolWithFallback(idx.yahooCashSymbol, idx.cashData, idx.intradayCash, tz);
-            if (idx.id !== 'taiex' && idx.id !== 'sox') {
-              await fetchYahooSymbolWithFallback(idx.yahooFuturesSymbol, idx.futuresData, idx.intradayFutures, tz);
-            }
-          })
-        );
+            const pending = [];
+            if (!idx.cashHistory1Y.length) pending.push(fetchYahooHistoryWithFallback(idx.yahooCashSymbol, idx.cashHistory1Y, tz));
+            if (!idx.futuresHistory1Y.length) pending.push(fetchYahooHistoryWithFallback(idx.yahooFuturesSymbol, idx.futuresHistory1Y, tz));
+            return pending;
+          });
+          if (historyTasks.length) await Promise.allSettled(historyTasks);
+          window.__marketHistoryLoaded = INDICES_CONFIG.every(idx => idx.cashHistory1Y.length && idx.futuresHistory1Y.length);
+        }
       } catch (err) {
-        // Clean fallback in offline/sandboxed mode
+        failed++;
       } finally {
         if (spinner) spinner.classList.remove('animate-spin');
         renderAll();
+        const lastTickEl = document.getElementById('lastTickTime');
+        const badgeEl = document.getElementById('liveStreamBadge');
+        const nowText = new Intl.DateTimeFormat('zh-TW', { timeZone: 'Asia/Taipei', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).format(new Date());
+        if (lastTickEl) lastTickEl.textContent = `資料檢查: ${nowText}｜成功 ${success}/10，失敗 ${failed}/10`;
+        if (badgeEl) {
+          badgeEl.className = success === 10
+            ? 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'
+            : 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-amber-500/15 text-amber-300 border border-amber-500/30';
+          badgeEl.innerHTML = `<span class="w-1.5 h-1.5 rounded-full ${success === 10 ? 'bg-emerald-400 live-dot' : 'bg-amber-400'}"></span>${success === 10 ? '行情來源同步成功' : `行情部分失敗 ${success}/10`}`;
+        }
         if (!silent) {
-          showToast('已同步最新五大指數現貨與電子盤即時報價', '⚡');
+          showToast(`行情更新完成：成功 ${success}/10，失敗 ${failed}/10；未成功項目保留前次資料`, success === 10 ? '✅' : '⚠️');
         }
       }
     }
@@ -1901,7 +2013,7 @@
 
       if (state.sessionMode === 'auto' && autoBtn) {
         autoBtn.className = 'session-mode-btn px-2.5 py-1 rounded-md text-xs font-semibold bg-indigo-600 text-white shadow transition-all';
-        if (summaryEl) summaryEl.textContent = '目前規則：開盤自動顯示現貨即時，收盤自動切換電子盤/夜盤';
+        if (summaryEl) summaryEl.textContent = '目前規則：現貨開盤顯示現貨；收盤且電子盤開市時切換期貨';
       } else if (state.sessionMode === 'cash' && cashBtn) {
         cashBtn.className = 'session-mode-btn px-2.5 py-1 rounded-md text-xs font-semibold bg-emerald-600 text-white shadow transition-all';
         if (summaryEl) summaryEl.textContent = '目前規則：強制全部顯示正規現貨盤 (Regular Cash Session)';
@@ -2003,20 +2115,20 @@
 
           if (state.liveStreamActive) {
             if (iconEl) iconEl.textContent = '⏸️';
-            if (textEl) textEl.textContent = '暫停跳動';
+            if (textEl) textEl.textContent = '暫停自動更新';
             if (badgeEl) {
               badgeEl.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30';
-              badgeEl.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 live-dot"></span>即時連線跳動中';
+              badgeEl.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 live-dot"></span>行情自動更新中';
             }
-            showToast('已恢復即時報價跳動', '▶️');
+            showToast('已恢復每分鐘行情更新', '▶️');
           } else {
             if (iconEl) iconEl.textContent = '▶️';
-            if (textEl) textEl.textContent = '恢復跳動';
+            if (textEl) textEl.textContent = '恢復自動更新';
             if (badgeEl) {
               badgeEl.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-amber-500/15 text-amber-300 border border-amber-500/30';
-              badgeEl.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>報價跳動已暫停';
+              badgeEl.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>行情自動更新已暫停';
             }
-            showToast('已暫停即時報價跳動', '⏸️');
+            showToast('已暫停自動行情更新（仍可手動更新）', '⏸️');
           }
         });
       }
@@ -2105,22 +2217,23 @@
       updateSessionModeButtonsUI();
       buildInitialCardsHTML();
       bindEvents();
-      renderAll();
+      const initialStatus = document.getElementById('lastTickTime');
+      if (initialStatus) initialStatus.textContent = '正在取得行情來源報價…';
 
-      // Immediately sync live quotes from multi-proxy API on startup
+      // Render only after the first provider response; placeholder seed values
+      // are deliberately not presented as real prices.
       trySyncLiveQuotes(true);
 
       // Update clocks every second
       if (state.clockIntervalId) clearInterval(state.clockIntervalId);
       state.clockIntervalId = setInterval(updateClocksAndMarketStatus, 1000);
 
-      // Update live market ticks every 2.5 seconds
-      if (state.streamIntervalId) clearInterval(state.streamIntervalId);
-      state.streamIntervalId = setInterval(simulateRealtimeTick, 2500);
-
-      // Sync real external API quotes every 30 seconds
+      // Refresh provider quotes every 60 seconds. There is deliberately no
+      // client-side random tick or interpolation between provider updates.
       if (state.apiSyncIntervalId) clearInterval(state.apiSyncIntervalId);
-      state.apiSyncIntervalId = setInterval(() => trySyncLiveQuotes(true), 30000);
+      state.apiSyncIntervalId = setInterval(() => {
+        if (state.liveStreamActive) trySyncLiveQuotes(true);
+      }, 60000);
     });
   </script>
 </body>
